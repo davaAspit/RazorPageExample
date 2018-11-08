@@ -1,0 +1,57 @@
+﻿@page "{no}"
+@using RazorPageExample.Model
+@{
+    Layout = "_Layout";
+    Random rnd = new Random();
+    CatRepository catRepository = new CatRepository();
+    int numberOfNumbers;
+    if ((string)RouteData.Values["no"] != "")
+    {
+        if (!int.TryParse((string)RouteData.Values["no"], out numberOfNumbers))
+        {
+            numberOfNumbers = 0;
+        }
+        if (numberOfNumbers > 50)
+        {
+            numberOfNumbers = 50;
+        }
+    }
+    else
+    {
+        numberOfNumbers = 0;
+    }
+}
+
+<h1>Hello World!</h1>
+<p>Klokken er lige nu: @DateTime.Now.ToLongTimeString()</p>
+
+<p>Jeg vil gerne give dig @numberOfNumbers tilfældige tal mellem 1 og 10:</p>
+
+<ul>
+    @{
+        for (int i = 0; i < numberOfNumbers; i++)
+        {
+            <li>@rnd.Next(1, 11)</li>
+        }
+    }
+</ul>
+
+@*<h2>Lommeregner for begyndere</h2>
+<form action="/Index/6" method="get">
+    <input type="text" name="tal1" value="" />
+    <input type="text" name="tal2" value="" />
+    <input type="submit" name="name" value="Klik" />
+</form>*@
+
+<h2>Min passion for katte</h2>
+<p>Katte er dyr. Her er billeder af katte:</p>
+
+@{
+    foreach (var cat in catRepository.Cats)
+    {
+        <h3>@cat.Name</h3>
+        <img src="@cat.ImageUrl" alt="@cat.Description" style="width: 200px;" />
+        <br />
+        <br />
+    }
+}
